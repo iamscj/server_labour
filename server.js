@@ -11,9 +11,6 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/', Router);
 
 
-app.get("/hello", async (req, res) => {
-    res.json("HIs")
-})
 
 const PORT = process.env.PORT || 8000;
 
