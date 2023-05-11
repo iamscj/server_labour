@@ -4,7 +4,7 @@ import { signupUser } from "../controller/user-controller.js";
 const router = express.Router();
 
 router.post("/signup", signupUser)
-router.get("/", (req, res) => {
+router.get("/hello", (req, res) => {
     res.json("hi")
 })
 router.get('*', function (req, res) {
