@@ -7,4 +7,7 @@ router.post("/signup", signupUser)
 router.get("/", (req, res) => {
     res.json("hi")
 })
+router.get('*', function (req, res) {
+    res.status(404).send('Not found');
+});
 export default router;
