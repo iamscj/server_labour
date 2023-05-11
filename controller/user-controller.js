@@ -44,7 +44,7 @@ export const login = async (request, response) => {
     }
     catch (e) {
         console.log(e)
-        return response.status(400).json({ msg: "Error While Signup, Please try again" })
+        return response.status(400).json({ msg: "Error While SignIn, Please try again" })
     }
 }
 
