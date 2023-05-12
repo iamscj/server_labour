@@ -10,8 +10,6 @@ app.use(express.urlencoded({ extended: true }))
 
 app.use('/', Router);
 
-
-
 const PORT = process.env.PORT || 8000;
 
 app.listen(PORT, () => {
