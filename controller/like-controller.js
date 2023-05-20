@@ -33,10 +33,10 @@ export const getLikedPosts = async (request, response) => {
     const username = request.query.username;
     try {
         let data = await pool.query(
-            `SELECT * FROM likes 
+            `SELECT job_id FROM likes 
              WHERE username='${username}'`
         )
-        return response.json(data.rows.job_id)
+        return response.json(data.rows)
     }
     catch (e) {
         console.log(e)
