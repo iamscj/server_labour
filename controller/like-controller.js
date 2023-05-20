@@ -27,3 +27,20 @@ export const LikeDislike = async (request, response) => {
         response.json("ERROR")
     }
 }
+
+export const getLikedPosts = async (request, response) => {
+    console.log("Get /get-liked-posts")
+    const username = request.query.username;
+    console.log(username)
+    try {
+        let data = await pool.query(
+            `SELECT * FROM likes 
+             WHERE username='${username}'`
+        )
+        return response.json(data.rows)
+    }
+    catch (e) {
+        console.log(e)
+        response.json("ERROR")
+    }
+}
