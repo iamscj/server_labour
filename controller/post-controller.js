@@ -35,6 +35,7 @@ export const createJob = async (request, response) => {
 }
 
 export const getJob = async (request, response) => {
+    console.log("GET /getJob")
     try {
         const jobs = await pool.query("SELECT * FROM jobs");
         response.json(jobs.rows);
