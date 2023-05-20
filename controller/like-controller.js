@@ -31,13 +31,12 @@ export const LikeDislike = async (request, response) => {
 export const getLikedPosts = async (request, response) => {
     console.log("Get /get-liked-posts")
     const username = request.query.username;
-    console.log(username)
     try {
         let data = await pool.query(
             `SELECT * FROM likes 
              WHERE username='${username}'`
         )
-        return response.json(data.rows)
+        return response.json(data.rows.job_id)
     }
     catch (e) {
         console.log(e)
