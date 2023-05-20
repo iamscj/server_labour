@@ -1,10 +1,9 @@
 import { pool } from "../database/db.js";
 
-export const isLiked = async (request, response) => {
+export const LikeDislike = async (request, response) => {
     console.log("POST /like-dislike")
     const username = request.params['username']
     const job_id = request.params['job_id']
-    console.log(username, job_id)
     try {
         let data = await pool.query(
             `SELECT * FROM likes 
