@@ -43,3 +43,18 @@ export const getLikedPosts = async (request, response) => {
         response.json("ERROR")
     }
 }
+
+export const getLikeCount = async (request, response) => {
+    console.log("Get /get-like-count")
+    try {
+        let data = await pool.query(
+            `SELECT job_id, COUNT(*) FROM likes 
+            GROUP BY job_id`
+        )
+        return response.json(data.rows)
+    }
+    catch (e) {
+        console.log(e)
+        response.json("ERROR")
+    }
+}
