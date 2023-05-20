@@ -1,7 +1,7 @@
 import { pool } from "../database/db.js";
 
 export const isLiked = async (request, response) => {
-    console.log("GET /like-dislike")
+    console.log("POST /like-dislike")
     const username = request.params['username']
     const job_id = request.params['job_id']
     console.log(username, job_id)
