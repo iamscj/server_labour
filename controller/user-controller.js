@@ -40,7 +40,7 @@ export const login = async (request, response) => {
         if (actual_password !== password) {
             return response.json({ msg: "password missmatch" })
         }
-        return response.json({ msg: "user verified" })
+        return response.json({ msg: "user verified", details: data.rows[0] })
     }
     catch (e) {
         console.log(e)
