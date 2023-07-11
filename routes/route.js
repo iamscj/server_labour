@@ -6,7 +6,6 @@ const router = express.Router();
 
 router.post("/signup", signupUser)
 router.post("/login", login)
-router.post("/login", login)
 router.post("/create-job", createJob)
 router.get("/get-all-jobs", getJob)
 router.get("/get-all-jobs-by-category/:field", getJobByCategory)

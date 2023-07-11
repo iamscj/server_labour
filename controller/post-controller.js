@@ -29,8 +29,8 @@ export const createJob = async (request, response) => {
         response.json({ job_id: jobId, msg: "successfull" });
     }
     catch (e) {
-        console.log(e.severity)
-        response.json({ error: 'Check username' });
+        console.log(e)
+        response.json({ error: 'Error, Something went wrong' });
     }
 }
 
