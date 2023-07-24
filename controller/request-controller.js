@@ -1,8 +1,5 @@
 import { pool } from "../database/db.js";
-const accountSid = 'AC0cabc3e452bca2d11c8a2c70c5024bce';
-const authToken = '89fc9e40bf312d1603bf6c5fa6adf2a4';
-import twilio from 'twilio';
-const client = twilio(accountSid, authToken);
+import nodemailer from 'nodemailer';
 
 export const raiseRequest = async (req, res) => {
   console.log("POST /raiseRequest");
@@ -64,57 +61,76 @@ export const acceptRejectRequest = async (req, res) => {
   const job_id = req.body.job_id;
   const username1 = req.body.username1; //labour
   const username2 = req.body.username2; //user
+
+  const email_id_1 = req.body.email_id_1; //labour
+  const email_id_2 = req.body.email_id_2; //user
+
   const phonenumber1 = req.body.phonenumber1; //labour
   const phonenumber2 = req.body.phonenumber2; //user
-  const accountSid = 'AC0cabc3e452bca2d11c8a2c70c5024bce';
-  const authToken = '574c3db1fd374d08d11c188fe0b1e43b';
+
+  const email_id = "findyourlabour.sa@gmail.com"
+  const password = "bwlutequfsoxgxmn"
+
+  const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: email_id,
+      pass: password
+    }
+  });
+
   //yes =>accept + delete job id
   //yes1 => accept + keep job id
   //no => remove request
+
   if (status === "yes" || status === "yes1") {
-    //whatsapp logic
-    const fromPhoneNumber = '+14155238886'; // Twilio phone number
-    const toPhoneNumber = '+917892335688'; // receipient
-    const customMessage = 'Hello, this is a custom message from FindYourLabour';
-    // const client = twilio(accountSid, authToken);
-    const message = await client.messages.create({
-      body: customMessage,
-      from: 'whatsapp:+14155238886',
-      // to: 'whatsapp:+917892335688'
-      to: 'whatsapp:+919449065938'
+    let msg = `<p>Hello, this is a custom message from FindYourLabour.sa. Find the Details you requested below:</p><p>Phone number: <strong>${phonenumber1}</strong></p><p>Name: <strong>${username1}</strong></p><p>Thank You,<br>Find Your Labour Team</p>`
+      ;
+    let mailOptions = {
+      from: email_id,
+      to: 'ameyahorakeri@gmail.com',
+      subject: 'FindYourLabour User Details',
+      html: msg,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
     });
-
-    console.log(`Message SID: ${message.sid}`);
-    return res.json("successful")
+    msg = `<p>Hello, this is a custom message from FindYourLabour.sa. Find the Details you requested below:</p><p>Phone number: <strong>${phonenumber2}</strong></p><p>Name: <strong>${username2}</strong></p><p>Thank You,<br>Find Your Labour Team</p>`
+      ;
+    mailOptions = {
+      from: email_id,
+      to: 'iamscjoshi@gmail.com',
+      subject: 'FindYourLabour User Details',
+      html: msg,
+    };
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
   }
-  // if (status === "yes") {
-  //   try {
-  //     const query = `DELETE FROM jobs WHERE job_id='${job_id}'`;
-  //     await pool.query(query);
-  //     res.json({ msg: "successfull" });
-  //   } catch (err) {
-  //     res.json({ msg: "error while doing the operation" });
-  //   }
-  // } else if (status === "yes1" || status === "no") {
-  //   try {
-  //     const query = `DELETE FROM requests WHERE username='${username2}' and job_id='${job_id}'`;
-  //     await pool.query(query);
-  //     res.json({ msg: "successfull" });
-  //   } catch (err) {
-  //     res.json({ msg: "error while doing the operation" });
-  //   }
-  // }
+  if (status === "yes") {
+    try {
+      const query = `DELETE FROM jobs WHERE job_id = '${job_id}'`;
+      await pool.query(query);
+      res.json({ msg: "successfull" });
+    } catch (err) {
+      res.json({ msg: "error while doing the operation" });
+    }
+  }
+  else if (status === "yes1" || status === "no") {
+    try {
+      const query = `DELETE FROM requests WHERE username = '${username2}' and job_id = '${job_id}'`;
+      await pool.query(query);
+      res.json({ msg: "successfull" });
+    } catch (err) {
+      res.json({ msg: "error while doing the operation" });
+    }
+  }
 };
-// -- Constraint for username referencing users table
-// ALTER TABLE requests
-// ADD CONSTRAINT fk_requests_username
-// FOREIGN KEY (username)
-// REFERENCES users(username)
-// ON DELETE CASCADE;
-
-// -- Constraint for job_id referencing jobs table
-// ALTER TABLE requests
-// ADD CONSTRAINT fk_requests_job_id
-// FOREIGN KEY (job_id)
-// REFERENCES jobs(job_id)
-// ON DELETE CASCADE;
