@@ -9,7 +9,7 @@ export const raiseRequest = async (req, res) => {
   try {
     let query = `SELECT * FROM jobs WHERE job_id='${job_id}'`;
     let data = await pool.query(query);
-    if (data.rows[0].username === username) {
+    if (data.rows.length > 0 && data.rows[0].username === username) {
       return res.json({ msg: "Cannot Raise Request For Self Jobs" });
     }
     query = `
