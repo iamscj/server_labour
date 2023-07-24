@@ -1,17 +1,20 @@
 import { pool } from "../database/db.js";
+const accountSid = 'AC0cabc3e452bca2d11c8a2c70c5024bce';
+const authToken = '89fc9e40bf312d1603bf6c5fa6adf2a4';
 import twilio from 'twilio';
+const client = twilio(accountSid, authToken);
 
 export const raiseRequest = async (req, res) => {
   console.log("POST /raiseRequest");
 
-  const { username, job_id, phonenumber, salary, no_of_hours } = req.body;
+  const { username, job_id, phonenumber, salary, no_of_hours, email_id } = req.body;
 
   try {
     const query = `
-      INSERT INTO requests (username, job_id, phonenumber, salary, no_of_hours)
-      VALUES ($1, $2, $3, $4, $5)
+      INSERT INTO requests (username, job_id, phonenumber, salary, no_of_hours, email_id)
+      VALUES ($1, $2, $3, $4, $5, $6)
     `;
-    const values = [username, job_id, phonenumber, salary, no_of_hours];
+    const values = [username, job_id, phonenumber, salary, no_of_hours, email_id];
 
     await pool.query(query, values);
 
@@ -73,11 +76,12 @@ export const acceptRejectRequest = async (req, res) => {
     const fromPhoneNumber = '+14155238886'; // Twilio phone number
     const toPhoneNumber = '+917892335688'; // receipient
     const customMessage = 'Hello, this is a custom message from FindYourLabour';
-    const client = twilio(accountSid, authToken);
+    // const client = twilio(accountSid, authToken);
     const message = await client.messages.create({
       body: customMessage,
-      from: fromPhoneNumber,
-      to: toPhoneNumber
+      from: 'whatsapp:+14155238886',
+      // to: 'whatsapp:+917892335688'
+      to: 'whatsapp:+919449065938'
     });
 
     console.log(`Message SID: ${message.sid}`);
@@ -85,7 +89,7 @@ export const acceptRejectRequest = async (req, res) => {
   }
   // if (status === "yes") {
   //   try {
-  //     const query = `DELETE FROM jobs WHERE job_id="${job_id}"`;
+  //     const query = `DELETE FROM jobs WHERE job_id='${job_id}'`;
   //     await pool.query(query);
   //     res.json({ msg: "successfull" });
   //   } catch (err) {
@@ -93,7 +97,7 @@ export const acceptRejectRequest = async (req, res) => {
   //   }
   // } else if (status === "yes1" || status === "no") {
   //   try {
-  //     const query = `DELETE FROM requests WHERE username="${username2}" and job_id="${job_id}"`;
+  //     const query = `DELETE FROM requests WHERE username='${username2}' and job_id='${job_id}'`;
   //     await pool.query(query);
   //     res.json({ msg: "successfull" });
   //   } catch (err) {
