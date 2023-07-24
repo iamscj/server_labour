@@ -1,8 +1,8 @@
 import express from "express";
-import { signupUser, login } from "../controller/user-controller.js";
+import { signupUser, login, verifyUser } from "../controller/user-controller.js";
 import { createJob, getJob, getJobByCategory } from "../controller/post-controller.js";
 import { LikeDislike, getLikeCount, getLikedPosts } from "../controller/like-controller.js";
-import { getRequestsForUser, raiseRequest } from "../controller/request-controller.js";
+import { acceptRejectRequest, getRequestsForUser, raiseRequest } from "../controller/request-controller.js";
 const router = express.Router();
 
 router.post("/signup", signupUser)
@@ -15,6 +15,8 @@ router.get("/get-liked-posts", getLikedPosts)
 router.get("/get-like-count", getLikeCount)
 router.post("/raise-request", raiseRequest)
 router.get("/get-requests-for-user/:username", getRequestsForUser)
+router.post("/accept-reject-request", acceptRejectRequest)
+router.post("/verify-user", verifyUser)
 
 router.get("/hello", (req, res) => {
     res.json("hi")

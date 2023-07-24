@@ -48,5 +48,24 @@ export const login = async (request, response) => {
     }
 }
 
+export const verifyUser = async (req, res) => {
+    console.log("POST /verifyUser")
+    const { username, password } = req.body;
+    console.log(username, password)
+    try {
+        const query = `SELECT * FROM users WHERE username='${username}'`;
+        let data = await pool.query(query);
+        let actual_password = data.rows[0].password;
+        if (actual_password !== password) {
+            return res.json({ msg: "password missmatch" })
+        }
+        return res.json({ msg: "password match" })
+    }
+    catch (err) {
+        // console.log(err);
+        return res.json({ msg: "error" })
+    }
+}
+
 // INSERT INTO users (username, phonenumber, password)
 // VALUES ('JohnDoe', '555-1234', 'mypassword123');
