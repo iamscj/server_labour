@@ -88,7 +88,7 @@ export const acceptRejectRequest = async (req, res) => {
       ;
     let mailOptions = {
       from: email_id,
-      to: 'ameyahorakeri@gmail.com',
+      to: 'ameyaphorakeri.cs20@rvce.edu.in',
       subject: 'FindYourLabour User Details',
       html: msg,
     };
