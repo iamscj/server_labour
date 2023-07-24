@@ -134,3 +134,15 @@ export const acceptRejectRequest = async (req, res) => {
     }
   }
 };
+
+// CREATE TABLE requests (
+//   username VARCHAR(30),
+//   job_id VARCHAR(100),
+//   phonenumber VARCHAR(30),
+//   salary INTEGER,
+//   no_of_hours INTEGER,
+//   email_id VARCHAR(100) NOT NULL,
+//   PRIMARY KEY (username, job_id),
+//   FOREIGN KEY (username) REFERENCES users(username) ON DELETE CASCADE ON UPDATE CASCADE,
+//   FOREIGN KEY (job_id) REFERENCES jobs(job_id) ON DELETE CASCADE ON UPDATE CASCADE
+// );
