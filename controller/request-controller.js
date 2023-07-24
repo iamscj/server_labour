@@ -7,7 +7,12 @@ export const raiseRequest = async (req, res) => {
   const { username, job_id, phonenumber, salary, no_of_hours, email_id } = req.body;
 
   try {
-    const query = `
+    let query = `SELECT * FROM jobs WHERE job_id='${job_id}'`;
+    let data = await pool.query(query);
+    if (data.rows[0].username === username) {
+      return res.json({ msg: "Cannot Raise Request For Self Jobs" });
+    }
+    query = `
       INSERT INTO requests (username, job_id, phonenumber, salary, no_of_hours, email_id)
       VALUES ($1, $2, $3, $4, $5, $6)
     `;
@@ -84,36 +89,41 @@ export const acceptRejectRequest = async (req, res) => {
   //no => remove request
 
   if (status === "yes" || status === "yes1") {
-    let msg = `<p>Hello, this is a custom message from FindYourLabour.sa. Find the Details you requested below:</p><p>Phone number: <strong>${phonenumber1}</strong></p><p>Name: <strong>${username1}</strong></p><p>Thank You,<br>Find Your Labour Team</p>`
-      ;
-    let mailOptions = {
-      from: email_id,
-      to: email_id_2,
-      subject: 'FindYourLabour User Details',
-      html: msg,
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Error sending email:', error);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
-    msg = `<p>Hello, this is a custom message from FindYourLabour.sa. Find the Details you requested below:</p><p>Phone number: <strong>${phonenumber2}</strong></p><p>Name: <strong>${username2}</strong></p><p>Thank You,<br>Find Your Labour Team</p>`
-      ;
-    mailOptions = {
-      from: email_id,
-      to: email_id_1,
-      subject: 'FindYourLabour User Details',
-      html: msg,
-    };
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.error('Error sending email:', error);
-      } else {
-        console.log('Email sent:', info.response);
-      }
-    });
+    try {
+      let msg = `<p>Hello, this is a custom message from FindYourLabour.sa. Find the Details you requested below:</p><p>Phone number: <strong>${phonenumber1}</strong></p><p>Name: <strong>${username1}</strong></p><p>Thank You,<br>Find Your Labour Team</p>`
+        ;
+      let mailOptions = {
+        from: email_id,
+        to: email_id_2,
+        subject: 'FindYourLabour User Details',
+        html: msg,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+        } else {
+          console.log('Email sent:', info.response);
+        }
+      });
+      msg = `<p>Hello, this is a custom message from FindYourLabour.sa. Find the Details you requested below:</p><p>Phone number: <strong>${phonenumber2}</strong></p><p>Name: <strong>${username2}</strong></p><p>Thank You,<br>Find Your Labour Team</p>`
+        ;
+      mailOptions = {
+        from: email_id,
+        to: email_id_1,
+        subject: 'FindYourLabour User Details',
+        html: msg,
+      };
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.error('Error sending email:', error);
+        } else {
+          console.log('Email sent:', info.response);
+        }
+      });
+    }
+    catch (err) {
+      res.json({ msg: "error" })
+    }
   }
   if (status === "yes") {
     try {
