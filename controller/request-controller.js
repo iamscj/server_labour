@@ -5,7 +5,6 @@ export const raiseRequest = async (req, res) => {
   console.log("POST /raiseRequest");
 
   const { username, job_id, phonenumber, salary, no_of_hours, email_id } = req.body;
-
   try {
     let query = `SELECT * FROM jobs WHERE job_id='${job_id}'`;
     let data = await pool.query(query);
@@ -22,7 +21,7 @@ export const raiseRequest = async (req, res) => {
 
     res.status(200).json({ message: "Request raised successfully" });
   } catch (error) {
-    console.error("Error while raising request:", error);
+    // console.error("Error while raising request:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
