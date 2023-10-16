@@ -22,6 +22,7 @@ export const raiseRequest = async (req, res) => {
     res.status(200).json({ message: "Request raised successfully" });
   } catch (error) {
     // console.error("Error while raising request:", error);
+    console.log(error)
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
