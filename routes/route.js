@@ -41,9 +41,6 @@ router.post("/verify-user", verifyUser);
 router.get("/hello", (req, res) => {
     res.json("hi");
 });
-router.get("*", function (req, res) {
-    res.status(404).send("Not found");
-});
 router.get("/get/:key", (req, res) => {
     const { key } = req.params;
     const value = keyValueStore[key];
@@ -53,6 +50,9 @@ router.get("/get/:key", (req, res) => {
     } else {
         res.status(404).json({ error: "Key not found" });
     }
+});
+router.get("*", function (req, res) {
+    res.status(404).send("Not found");
 });
 
 // API endpoint to write a value for a given key
